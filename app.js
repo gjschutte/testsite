@@ -12,6 +12,23 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+// Set up mongoose connection
+const { DBLOGIN } = process.env;
+const { DBPASSWORD } = process.env;
+const { DBCOMMAND } = process.env;
+
+var mongoose = require('mongoose');
+var mongoDB = 'mongodb://' + DBLOGIN + ":" + DBPASSWORD + DBCOMMAND;
+console.log (mongoDB);
+mongoose.connect(mongoDB, { useNewUrlParser: true });
+var db = mongoose.connection;
+// If the connection throws an error
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+// If the connection is succesfull
+db.on('connected', function () {
+  console.log('Mongoose default connection open to ' + mongoDB);
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
