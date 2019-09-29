@@ -1,0 +1,10 @@
+<% if ( typeof(errors) !== 'undefined') { %>
+    <p>There are errros in the input:</p>
+    <ul class="text-danger">
+       <% errors.forEach(function( error) { %>
+            <li>
+                <%= error.msg %>
+            </li>
+       <% }) %>
+    </ul>
+<% } %>

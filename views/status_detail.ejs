@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title><%= title %></title>
+        <% include partials/header %>
+    </head>
+
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-2">
+                    <!-- block menu -->
+                    <% include partials/menu.ejs %>
+                </div>
+                <div class="col-sm-10">
+                    <!-- block content -->
+                    <h1>Status: <%= status.description %></h1>
+                    <p>Tasks with this status:</p>
+                    <hr>
+                    <% if (status_tasks.length > 0) { %>
+                        <% status_tasks.forEach(function(task) { %>
+                            <p><a href="<%= task.url %>"><%= task.description %></a></p>
+                            <p><%= task.actionHolder %></p>
+                            <p><%= task.category.description %></p>
+                            <hr>
+                        <% }); %>
+                    <% } else { %>
+                        <p>No tasks with this status</p>
+                    <% }; %>
+                     <hr>
+                    <p><a href="<%= status.url %>/delete">Delete status</a></p>
+               </div>
+            </div>
+        </div>
+    </body>    
+</html>

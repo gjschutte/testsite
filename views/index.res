@@ -18,6 +18,9 @@
                     <p>Welcome to <%=title %>, a very basic website to test node.js.</p>
 
                     <h1>Dynamic content</h1>
+<!--                        <% tasks.forEach( function( task ){ %>
+                            <p><%=task.description %></p>
+                        <% }); %>
                     <ul>
                         <li>
                             <b>Tasks: </b> <%=data.task_count %>
@@ -28,7 +31,7 @@
                         <li>
                             <b>Statusses: </b> <%=data.status_count %>
                         </li>
-                    </ul>
+                    </ul> -->
                 </div>
             </div>
         </div>

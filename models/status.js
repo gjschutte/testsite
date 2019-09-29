@@ -8,5 +8,14 @@ var StatusSchema = new Schema(
     }
 );
 
+// Virtual for category URL
+StatusSchema
+.virtual('url')
+.get(function () {
+    return '/tasks/status/' + this.id;
+});
+
+
+
 // Export model
 module.exports = mongoose.model('Status', StatusSchema);

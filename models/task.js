@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 var Schema = mongoose.Schema;
 
@@ -13,6 +14,37 @@ var TaskSchema = new Schema(
         comments: {type: String},
     }
 );
+
+// Virtual for task's URL
+TaskSchema
+.virtual('url')
+.get(function () {
+    return '/tasks/task/' + this.id;
+});
+
+// Virtual for formatted start date
+TaskSchema
+.virtual('startDate_formatted')
+.get(function () {
+    if (this.startDate == null) {
+        return null;
+    }
+    else {
+        return moment(this.startDate).format('MMMM Do, YYYY');
+    }
+});
+
+// Virtual for formatted end date
+TaskSchema
+.virtual('endDate_formatted')
+.get(function () {
+    if (this.endDate == null) {
+        return null;
+    }
+    else {
+        return moment(this.endDate).format('MMMM Do, YYYY');
+    }
+});
 
 // Export model
 module.exports = mongoose.model('Task', TaskSchema);

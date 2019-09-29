@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title><%= title %></title>
+        <% include partials/header %>
+    </head>
+
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-2">
+                    <!-- block menu -->
+                    <% include partials/menu.ejs %>
+                </div>
+                <div class="col-sm-10">
+                    <!-- block content -->
+                    <h1><%= title %>: <%= status.description %></h1>
+                    <hr>
+                    <% if (status_tasks.length > 0) { %>
+                        <p><strong>Delete the following tasks before attemting to delete this status.</strong></p>
+                        <% status_tasks.forEach(function(task) { %>
+                            <p><a href="<%= task.url %>"><%= task.description %></a></p>
+                            <p><%= task.actionHolder %></p>
+                            <p><%= task.status.description %></p>
+                            <hr>
+                        <% }); %>
+                    <% } else { %>
+                        <p>Do you really want to delete this status?</p>
+                        
+                        <form name="statusDelForm" method="POST" action="">
+                            <div class="form-group">
+                                <input type="hidden" class="form-control" name="statusyid" id="statusid" required="required" value=<%= status._id %>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Delete</button>
+                        </form>
+                        
+                    <% }; %>
+                </div>
+            </div>
+        </div>
+    </body>    
+</html>

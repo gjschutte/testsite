@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title><%= title %></title>
+        <% include partials/header %>
+    </head>
+
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-2">
+                    <!-- block menu -->
+                    <% include partials/menu.ejs %>
+                </div>
+                <div class="col-sm-10">
+                    <!-- block content -->
+                    <h1><%= title %></h1>
+
+                    <h2>Current tasks:</h2>
+                    <% task_list.forEach(function(task) { %>
+                        <hr>
+                        <p><a href="<%= task.url %>"><%= task.description %></a></p>
+                        <p><%= task.actionHolder %></p>
+                        <p><%= task.status.description %></p>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+    </body>    
+</html>
