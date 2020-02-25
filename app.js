@@ -18,6 +18,8 @@ var helmet = require('helmet');
 
 var app = express();
 
+var debug = require('debug')('task');
+
 app.use(helmet());
 
 // Set up mongoose connection
@@ -36,6 +38,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.on('connected', function () {
   console.log('Mongoose default connection open to ' + mongoDB);
 });
+debug('connection task made');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
