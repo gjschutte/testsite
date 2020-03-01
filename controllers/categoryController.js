@@ -1,11 +1,13 @@
 var Category = require('../models/category');
 var Task = require('../models/task');
+const winLogger = require('../winlogger');
 var async = require('async');
 const { check, validationResult } = require('express-validator');
 const { sanitizeBody } = require('express-validator');
 
 // Display list of all categorys.
 exports.category_list = function(req, res, next) {
+    winLogger.info('GET for category list');
     Category.find({}, 'description')
         .exec(function (err, list_categories) {
             if (err) { return next(err); }
@@ -17,7 +19,7 @@ exports.category_list = function(req, res, next) {
 
 // Display detail page for a specifick category.
 exports.category_detail = function(req, res, next) {
-
+    winLogger.info('GET for category-detail');
     async.parallel({
         category: function(callback) {
             Category.findById(req.params.id)
@@ -42,12 +44,12 @@ exports.category_detail = function(req, res, next) {
 
 // Display category create form on GET.
 exports.category_create_get = function(req, res) {
+    winLogger.info('GET for category create');
     res.render('category_form', { title: 'Create category'});
 };
 
 // Handle category create form on POST.
 exports.category_create_post = [
-
     // Validate that the name field is not empty
     check('name').not().isEmpty().withMessage('Name must have more than 5 characters'),    
 

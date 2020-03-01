@@ -6,6 +6,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const winLogger = require('./winlogger');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -18,7 +19,10 @@ var helmet = require('helmet');
 
 var app = express();
 
-var debug = require('debug')('task');
+// Set the debug options
+var debug = require('debug');
+var generalLogger = debug("app:general");
+var taskLogger = debug("app:task");
 
 app.use(helmet());
 
@@ -26,19 +30,18 @@ app.use(helmet());
 const { DBLOGIN } = process.env;
 const { DBPASSWORD } = process.env;
 const { DBCOMMAND } = process.env;
+winLogger.info(`DBCOMMAND: ${DBCOMMAND}`);
 
 var mongoose = require('mongoose');
 var mongoDB = 'mongodb://' + DBLOGIN + ":" + DBPASSWORD + DBCOMMAND;
-console.log (mongoDB);
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 var db = mongoose.connection;
 // If the connection throws an error
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 // If the connection is succesfull
 db.on('connected', function () {
-  console.log('Mongoose default connection open to ' + mongoDB);
+  winLogger.info('Mongoose connection succesfully opened');
 });
-debug('connection task made');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
