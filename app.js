@@ -34,7 +34,10 @@ winLogger.info(`DBCOMMAND: ${DBCOMMAND}`);
 
 var mongoose = require('mongoose');
 var mongoDB = 'mongodb://' + DBLOGIN + ":" + DBPASSWORD + DBCOMMAND;
-mongoose.connect(mongoDB, { useNewUrlParser: true });
+mongoose.connect(mongoDB, { 
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 var db = mongoose.connection;
 // If the connection throws an error
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));

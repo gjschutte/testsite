@@ -2,7 +2,7 @@
   "name": "testsite",
   "version": "0.0.0",
   "engines": {
-    "node": "8.15.1"
+    "node": "13.10.1"
   },
   "private": true,
   "scripts": {
@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "async": "^3.0.0",
+    "chai-http": "^4.3.0",
     "compression": "^1.7.4",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
