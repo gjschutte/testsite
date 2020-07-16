@@ -1,81 +1,87 @@
 process.env.DBCOMMAND = '@ds219839.mlab.com:19839/gjtest_test';
 
-let chai = require('chai');
-let chaiHttp = require('chai-http');
-var should = chai.should();
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+
+const should = chai.should();
+const server = require('../app');
+const Category = require('../models/category');
+
 chai.use(chaiHttp);
-let server = require('../app');
 
-let Task = require("../models/task");
-let Status = require("../models/status");
-let Category = require("../models/category");
-
-describe ('Categories', function() {
-    
-    beforeEach (function(done) {
-        /* Executed before each test
-        ** Create one category
-        */
-        var newCategory = new Category ({
-            description: 'Business'
-        });
-        newCategory.save(function(err) {
-            done();
-        });
+describe('Categories', () => {
+  beforeEach((done) => {
+    /* Executed before each test
+    ** Create one category
+    */
+    const newCategory = new Category({
+      description: 'Business',
     });
-    
-    afterEach(function(done) {
-        /* After eacht test: remove all categories */
-        Category.collection.drop();
+    newCategory.save((err) => {
+      if (err) { return (err); }
+      done();
+      return 0;
+    });
+  });
+
+  afterEach((done) => {
+    /* After eacht test: remove all categories */
+    Category.collection.drop();
+    done();
+  });
+
+  it('it should GET all the categories', (done) => {
+    chai.request(server)
+      .get('/tasks/categories')
+      .end((err, res) => {
+        if (err) { return (err); }
+        res.should.have.status(200);
+        should.not.exist(err);
+        res.text.should.match(/Category List/);
+        res.text.should.match(/Business/);
         done();
-    });
-    
-     it('it should GET all the categories', (done) => {
-     chai.request(server)
-        .get('/tasks/categories')
-        .end((err, res) => {
-            res.should.have.status(200);
-            should.not.exist(err);
-            res.text.should.match(/Category List/);
-            res.text.should.match(/Business/);
-            done();
-        });
-    });
+        return 0;
+      });
+  });
 
-    it ('it should get a SINGLE category on /tasks/category/<id>', function (done) {
-        var newCategory = new Category({
-            description: 'Private'
-        });
-        newCategory.save(function(err, data) {
-            chai.request(server)
-                .get('/tasks/category/'+data.id)
-                .end (function(err, res) {
-                    res.should.have.status(200);
-                    res.text.should.match(/Category: Private/);
-                    done();
-                });
-        });
+  it('it should get a SINGLE category on /tasks/category/<id>', (done) => {
+    const newCategory = new Category({
+      description: 'Private',
     });
-
-     it('it should get form for creating a category on GET', (done) => {
-     chai.request(server)
-        .get('/tasks/category/create')
-        .end((err, res) => {
-            res.should.have.status(200);
-            done();
+    newCategory.save((err, data) => {
+      if (err) { return (err); }
+      chai.request(server)
+        .get(`/tasks/category/${data.id}`)
+        .end((errMes, res) => {
+          res.should.have.status(200);
+          res.text.should.match(/Category: Private/);
+          done();
         });
+      return 0;
     });
+  });
 
-     it('it should create a new category on POST', (done) => {
-     chai.request(server)
-        .post('/tasks/category/create')
-        .send({name: 'Holidays'})
-        .end((err, res) => {
-            res.should.have.status(200);
-            res.text.should.match(/Category: Holidays/);
-            done();
-        });
-    });
+  it('it should get form for creating a category on GET', (done) => {
+    chai.request(server)
+      .get('/tasks/category/create')
+      .end((err, res) => {
+        if (err) { return (err); }
+        res.should.have.status(200);
+        done();
+        return 0;
+      });
+  });
 
-
-})
+  it('it should create a new category on POST', (done) => {
+    chai.request(server)
+      .post('/tasks/category/create')
+      .send({ name: 'Holidays' })
+      .end((err, res) => {
+        if (err) { return (err); }
+        res.should.have.status(200);
+        res.text.should.match(/Category: Holidays/);
+        done();
+        return 0;
+      });
+  });
+});

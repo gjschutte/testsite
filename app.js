@@ -1,28 +1,23 @@
 // Include environment file
 require('dotenv').config();
 
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const mongoose = require('mongoose');
+// Add compression, for faster traffic
+const compression = require('compression');
+// Add helmet, for setting HTTP headers (security)
+const helmet = require('helmet');
 const winLogger = require('./winlogger');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var tasksRouter = require('./routes/tasks');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const tasksRouter = require('./routes/tasks');
 
-// Add compression, for faster traffic
-var compression = require('compression');
-// Add helmet, for setting HTTP headers (security)
-var helmet = require('helmet');
-
-var app = express();
-
-// Set the debug options
-var debug = require('debug');
-var generalLogger = debug("app:general");
-var taskLogger = debug("app:task");
+const app = express();
 
 app.use(helmet());
 
@@ -32,18 +27,17 @@ const { DBPASSWORD } = process.env;
 const { DBCOMMAND } = process.env;
 winLogger.info(`DBCOMMAND: ${DBCOMMAND}`);
 
-var mongoose = require('mongoose');
-var mongoDB = 'mongodb://' + DBLOGIN + ":" + DBPASSWORD + DBCOMMAND;
-mongoose.connect(mongoDB, { 
+const mongoDB = `mongodb://${DBLOGIN}:${DBPASSWORD}${DBCOMMAND}`;
+mongoose.connect(mongoDB, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 });
-var db = mongoose.connection;
+const db = mongoose.connection;
 // If the connection throws an error
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 // If the connection is succesfull
-db.on('connected', function () {
-  winLogger.info('Mongoose connection succesfully opened');
+db.once('open', () => {
+  console.log('Mongoose connection succesfully opened');
 });
 
 // view engine setup
@@ -63,12 +57,12 @@ app.use('/users', usersRouter);
 app.use('/tasks', tasksRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

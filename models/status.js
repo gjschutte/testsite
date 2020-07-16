@@ -1,21 +1,19 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
-var StatusSchema = new Schema(
-    {
-        description: {type: String, required: true, max: 20},
-    }
+const StatusSchema = new Schema(
+  {
+    description: { type: String, required: true, max: 20 },
+  },
 );
 
 // Virtual for category URL
 StatusSchema
-.virtual('url')
-.get(function () {
-    return '/tasks/status/' + this.id;
-});
-
-
+  .virtual('url')
+  .get(function () { //eslint-disable-line
+    return `/tasks/status/${this.id}`;
+  });
 
 // Export model
 module.exports = mongoose.model('Status', StatusSchema);
