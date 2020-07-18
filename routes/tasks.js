@@ -7,10 +7,12 @@ const taskController = require('../controllers/taskController');
 const categoryController = require('../controllers/categoryController');
 const statusController = require('../controllers/statusController');
 
+///
+
 /// TASK ROUTES ///
 
 // GET task home page.
-router.get('/', taskController.index);
+router.get('/task_start', taskController.task_start);
 
 // GET request for creating a Task. Must come before displaying one task
 router.get('/task/create', taskController.task_create_get);

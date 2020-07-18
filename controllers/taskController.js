@@ -1,11 +1,11 @@
 const async = require('async');
 const { check, validationResult } = require('express-validator');
-const { sanitizeBody } = require('express-validator');
+const { body } = require('express-validator');
 const Task = require('../models/task');
 const Category = require('../models/category');
 const Status = require('../models/status');
 
-exports.index = (req, res) => {
+exports.task_start = (req, res) => {
   async.parallel({
     task_count: (callback) => {
       Task.countDocuments({}, callback); // Pass an empty object as match condition
@@ -19,7 +19,7 @@ exports.index = (req, res) => {
   }, (err, results) => {
     console.log(`Error: ${err}`);
     console.log(`Results: ${results}`);
-    res.render('index', { title: 'My ToDo list', error: err, data: results });
+    res.render('todo/task_start', { title: 'My ToDo list', error: err, data: results });
   });
 };
 
@@ -30,7 +30,7 @@ exports.task_list = (req, res, next) => {
     .exec((err, listTasks) => {
       if (err) { return next(err); }
       // Succesful, so render
-      res.render('task_list', { title: 'Task List', task_list: listTasks });
+      res.render('todo/task_list', { title: 'Task List', task_list: listTasks });
       return 0;
     });
 };
@@ -43,7 +43,7 @@ exports.task_detail = (req, res, next) => {
     .exec((err, results) => {
       if (err) { return next(err); }
       // Succesful, so render
-      res.render('task_details', { title: results.description, details: results });
+      res.render('todo/task_details', { title: results.description, details: results });
       return 0;
     });
 };
@@ -60,7 +60,7 @@ exports.task_create_get = (req, res, next) => {
     },
   }, (err, results) => {
     if (err) { return next(err); }
-    res.render('task_form', { title: 'Create task', categories: results.categories, statusses: results.statusses });
+    res.render('todo/task_form', { title: 'Create task', categories: results.categories, statusses: results.statusses });
     return 0;
   });
 };
@@ -74,7 +74,7 @@ exports.task_create_post = [
   check('status').not().isEmpty().withMessage('Status must not be empty'),
 
   // Sanitize fields (using wildcard)
-  sanitizeBody('*').escape(),
+  body('*').escape(),
 
   // Process reuqest after validation and sanitation.
   (req, res, next) => {
@@ -108,7 +108,7 @@ exports.task_create_post = [
         console.log('validation errors');
         console.log(`Task: ${task.actionHolder}`);
         if (err) { return next(err); }
-        res.render('task_form', {
+        res.render('todo/task_form', {
           title: 'Create task', categories: results.categories, statusses: results.statusses, task, errors: errors.array(),
         });
         return 0;
@@ -163,7 +163,7 @@ exports.task_update_get = (req, res, next) => {
 
     console.log(`Task update get: ${results.task}`);
     // Succes.
-    res.render('task_form', {
+    res.render('todo/task_form', {
       title: 'Update task', categories: results.categories, statusses: results.statusses, task: results.task,
     });
     return 0;
@@ -179,7 +179,7 @@ exports.task_update_post = [
   check('status').not().isEmpty().withMessage('Status must not be empty'),
 
   // Sanitize fields (using wildcard)
-  sanitizeBody('*').escape(),
+  body('*').escape(),
 
   // Process reuqest after validation and sanitation.
   (req, res, next) => {
@@ -217,7 +217,7 @@ exports.task_update_post = [
         console.log('validation errors');
         console.log(`Task: ${task.actionHolder}`);
         if (err) { return next(err); }
-        res.render('task_form', {
+        res.render('todo/task_form', {
           title: 'Create task', categories: results.categories, statusses: results.statusses, task, errors: errors.array(),
         });
         return 0;

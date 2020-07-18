@@ -1,6 +1,6 @@
 const async = require('async');
 const { check, validationResult } = require('express-validator');
-const { sanitizeBody } = require('express-validator');
+const { body } = require('express-validator');
 const winLogger = require('../winlogger');
 const Category = require('../models/category');
 const Task = require('../models/task');
@@ -12,7 +12,7 @@ exports.category_list = (req, res, next) => {
     .exec((err, listCategories) => {
       if (err) { return next(err); }
       // Succesful, so render
-      res.render('category_list', { title: 'Category List', category_list: listCategories });
+      res.render('todo/category_list', { title: 'Category List', category_list: listCategories });
       return 0;
     });
 };
@@ -39,7 +39,7 @@ exports.category_detail = (req, res, next) => {
       return next(errorMessage);
     }
     // Succesful, so render
-    res.render('category_detail', { title: 'Category detail', category: results.category, category_tasks: results.category_tasks });
+    res.render('todo/category_detail', { title: 'Category detail', category: results.category, category_tasks: results.category_tasks });
     return 0;
   });
 };
@@ -47,7 +47,7 @@ exports.category_detail = (req, res, next) => {
 // Display category create form on GET.
 exports.category_create_get = (req, res) => {
   winLogger.info('GET for category create');
-  res.render('category_form', { title: 'Create category' });
+  res.render('todo/category_form', { title: 'Create category' });
 };
 
 // Handle category create form on POST.
@@ -56,7 +56,7 @@ exports.category_create_post = [
   check('name').not().isEmpty().withMessage('Name must have more than 5 characters'),
 
   // Sanitize (escape) the name field.
-  sanitizeBody('name').escape(),
+  body('name').escape(),
 
   // Process request after validation and sanitization.
   (req, res, next) => {
@@ -72,7 +72,7 @@ exports.category_create_post = [
 
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
-      res.render('category_form', { title: 'Create category', category, errors: errors.array() });
+      res.render('todo/category_form', { title: 'Create category', category, errors: errors.array() });
     } else {
       // Data from form is valid
       // Check if Category with same name already exists.
@@ -111,7 +111,7 @@ exports.category_delete_get = (req, res, next) => {
       res.redirect('/tasks/categories');
     }
     // successfull, so render.
-    res.render('category_delete', { title: 'Delete Category', category: results.category, cat_tasks: results.cat_tasks });
+    res.render('todo/category_delete', { title: 'Delete Category', category: results.category, cat_tasks: results.cat_tasks });
     return 0;
   });
 };
@@ -131,7 +131,7 @@ exports.category_delete_post = (req, res, next) => {
     // Succes
     if (results.cat_tasks.length > 0) {
       // Category has tasks. Render in same way as for GET route.
-      res.render('category_delete', { title: 'Delete Category', category: results.category, cat_tasks: results.cat_tasks });
+      res.render('todo/category_delete', { title: 'Delete Category', category: results.category, cat_tasks: results.cat_tasks });
     } else {
       // Category has no tasks. Delete category and redirect to the list of categories
       Category.findByIdAndDelete(req.body.categoryid, (errorMes) => {

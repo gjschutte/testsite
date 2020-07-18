@@ -4,7 +4,7 @@ const router = express.Router();
 
 // GET home page.
 router.get('/', (req, res, next) => {
-  res.redirect('/tasks');
+  res.render('index', { title: 'Code Practice' });
 });
 
 module.exports = router;

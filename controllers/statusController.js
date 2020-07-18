@@ -1,6 +1,6 @@
 const async = require('async');
 const { check, validationResult } = require('express-validator');
-const { sanitizeBody } = require('express-validator');
+const { body } = require('express-validator');
 const Status = require('../models/status');
 const Task = require('../models/task');
 
@@ -10,7 +10,7 @@ exports.status_list = (req, res, next) => {
     .exec((err, listStatusses) => {
       if (err) { return next(err); }
       // Succesful, so render
-      res.render('status_list', { title: 'Status List', status_list: listStatusses });
+      res.render('todo/status_list', { title: 'Status List', status_list: listStatusses });
       return 0;
     });
 };
@@ -36,14 +36,14 @@ exports.status_detail = (req, res, next) => {
       return next(errorMessage);
     }
     // Succesful, so render
-    res.render('status_detail', { title: 'Status detail', status: results.status, status_tasks: results.status_tasks });
+    res.render('todo/status_detail', { title: 'Status detail', status: results.status, status_tasks: results.status_tasks });
     return 0;
   });
 };
 
 // Display status create form on GET.
 exports.status_create_get = (req, res) => {
-  res.render('status_form', { title: 'Create status' });
+  res.render('todo/status_form', { title: 'Create status' });
 };
 
 // Handle category create form on POST.
@@ -52,7 +52,7 @@ exports.status_create_post = [
   check('name').not().isEmpty().withMessage('Name must have more than 5 characters'),
 
   // Sanitize (escape) the name field.
-  sanitizeBody('name').escape(),
+  body('name').escape(),
 
   // Process request after validation and sanitization.
   (req, res, next) => {
@@ -68,7 +68,7 @@ exports.status_create_post = [
 
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
-      res.render('status_form', { title: 'Create status', status, errors: errors.array() });
+      res.render('todo/status_form', { title: 'Create status', status, errors: errors.array() });
     } else {
       // Data from form is valid
       // Check if Status with same name already exists.
@@ -108,7 +108,7 @@ exports.status_delete_get = (req, res, next) => {
       res.redirect('/tasks/statusses');
     }
     // successfull, so render.
-    res.render('status_delete', { title: 'Delete Status', status: results.status, status_tasks: results.status_tasks });
+    res.render('todo/status_delete', { title: 'Delete Status', status: results.status, status_tasks: results.status_tasks });
     return 0;
   });
 };
@@ -128,7 +128,7 @@ exports.status_delete_post = (req, res, next) => {
     // Succes
     if (results.status_tasks.length > 0) {
       // Status has tasks. Render in same way as for GET route.
-      res.render('status_delete', { title: 'Delete Status', status: results.status, status_tasks: results.status_tasks });
+      res.render('todo/status_delete', { title: 'Delete Status', status: results.status, status_tasks: results.status_tasks });
     } else {
       // Status has no tasks. Delete status and redirect to the list of statusses
       Status.findByIdAndDelete(req.body.statusyid, (errorMes) => {

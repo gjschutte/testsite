@@ -34,12 +34,8 @@
                             <select class="form-control" name="category" id="category" required="required" data-error="Please select one option">
                                 <option></option>
                                     <% categories.forEach(function (category) { %>
-                                        <% if task { %> 
-                                            <option value="<%= category._id selected=(category._id.toString()==task.category ? 'selected' : false) %>" <%=category.description %>
-                                        <% } else { %>
-                                            <option value="<%= category._id %>"> <%= category.description %>
-                                        <% } %>
-                                    <% }) %>
+                                        <option value="<%= category.id %>"> <%= category.description %>
+                                        <% }) %>
                                 </option>
                             </select>
                             <div class="help-block with-errors"></div>

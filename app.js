@@ -31,6 +31,7 @@ const mongoDB = `mongodb://${DBLOGIN}:${DBPASSWORD}${DBCOMMAND}`;
 mongoose.connect(mongoDB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useFindAndModify: false,
 });
 const db = mongoose.connection;
 // If the connection throws an error
