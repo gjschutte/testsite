@@ -11,11 +11,19 @@ const mongoose = require('mongoose');
 const compression = require('compression');
 // Add helmet, for setting HTTP headers (security)
 const helmet = require('helmet');
+const session = require('express-session');
+const passport = require('passport');
+const localStrategy = require('passport-local');
+const twitterStrategy = require('passport-twitter');
+const googleStrategy = require('passport-google');
+const facebookStrategy = require('passport-facebook');
 const winLogger = require('./winlogger');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const tasksRouter = require('./routes/tasks');
+
+const User = require('./models/user');
 
 const app = express();
 
@@ -49,6 +57,9 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({ secret: 'supernova', saveUninitialized: true, resave: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(compression()); // compress all routes
 app.use(express.static(path.join(__dirname, 'public')));
@@ -72,5 +83,9 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('error');
 });
+
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 module.exports = app;

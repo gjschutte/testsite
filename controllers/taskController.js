@@ -1,6 +1,7 @@
 const async = require('async');
 const { check, validationResult } = require('express-validator');
 const { body } = require('express-validator');
+const connectEnsureLogin = require('connect-ensure-login');
 const Task = require('../models/task');
 const Category = require('../models/category');
 const Status = require('../models/status');
