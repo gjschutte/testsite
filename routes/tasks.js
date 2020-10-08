@@ -7,7 +7,6 @@ const router = express.Router();
 const taskController = require('../controllers/taskController');
 const categoryController = require('../controllers/categoryController');
 const statusController = require('../controllers/statusController');
-const userController = require('../controllers/usersController');
 
 ///
 

@@ -12,7 +12,7 @@ exports.category_list = (req, res, next) => {
     .exec((err, listCategories) => {
       if (err) { return next(err); }
       // Succesful, so render
-      res.render('todo/category_list', { title: 'Category List', category_list: listCategories });
+      res.render('todo/category_list', { title: 'Category List', category_list: listCategories, user: req.user });
       return 0;
     });
 };
@@ -39,7 +39,12 @@ exports.category_detail = (req, res, next) => {
       return next(errorMessage);
     }
     // Succesful, so render
-    res.render('todo/category_detail', { title: 'Category detail', category: results.category, category_tasks: results.category_tasks });
+    res.render('todo/category_detail', {
+      title: 'Category detail',
+      category: results.category,
+      category_tasks: results.category_tasks,
+      user: req.user,
+    });
     return 0;
   });
 };
@@ -47,7 +52,7 @@ exports.category_detail = (req, res, next) => {
 // Display category create form on GET.
 exports.category_create_get = (req, res) => {
   winLogger.info('GET for category create');
-  res.render('todo/category_form', { title: 'Create category' });
+  res.render('todo/category_form', { title: 'Create category', user: req.user });
 };
 
 // Handle category create form on POST.
@@ -111,7 +116,12 @@ exports.category_delete_get = (req, res, next) => {
       res.redirect('/tasks/categories');
     }
     // successfull, so render.
-    res.render('todo/category_delete', { title: 'Delete Category', category: results.category, cat_tasks: results.cat_tasks });
+    res.render('todo/category_delete', {
+      title: 'Delete Category',
+      category: results.category,
+      cat_tasks: results.cat_tasks,
+      user: req.user,
+    });
     return 0;
   });
 };

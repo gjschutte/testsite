@@ -2,11 +2,13 @@
 <html lang="en">
     <head>
         <title><%= title %></title>
-        <%- include ('partials/header'); -%>
+        <%- include ('../partials/header'); -%>
         <%- include ('partials/helpfunctions.ejs'); -%>
     </head>
     <body>
         <div class="container-fluid">
+            <%- include ('../partials/navigation'); -%>
+            
             <div class="row">
                 <div class="col-sm-2">
                     <!-- block menu -->

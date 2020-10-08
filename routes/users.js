@@ -13,11 +13,14 @@ router.get('/redirect_login', usersController.redirect_login);
 // GET users login page.
 router.get('/users_signin', usersController.users_signin);
 
-// POST users login page - signup
-router.post('/local-reg', usersController.local_reg_post);
-
 // POST users login page - signin
 router.post('/login', usersController.local_login);
+
+// GET users signup page.
+router.get('/users_signup', usersController.users_signup);
+
+// POST users login page - signup
+router.post('/local-reg', usersController.local_reg_post);
 
 // GET users logout
 router.get('/logout', usersController.logout);

@@ -16,7 +16,7 @@ const { DBPASSWORD } = process.env;
 const { DBCOMMAND } = process.env;
 console.log(`DBCOMMAND: ${DBCOMMAND}`);
 
-const mongoDB = `mongodb://${DBLOGIN}:${DBPASSWORD}${DBCOMMAND}`;
+const mongoDB = `mongodb+srv://${DBLOGIN}:${DBPASSWORD}${DBCOMMAND}`;
 mongoose.connect(mongoDB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,

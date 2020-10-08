@@ -1,69 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, intial-scale=1">
-  <meta name="description" content="User Authentication">
-  <meta name="author" content="">
+  <meta name="description" content="User profile">
 
   <title><%= title %></title>
+  <%- include ('../partials/header'); -%>
 
-  <link rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 
 <body>
   <div class="container">
 
-    <nav class="navbar navbar-default" role="navigation">
-    <div class="container-fluid">
+    <%- include ('../partials/navigation'); -%>
 
-      <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
-
-      <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav">
-          <li>
-            <% if (typeof user !== 'undefined') { %>
-              <p class="navbar-text">
-                <strong>Hi, </strong>
-                <img src="<%= user.avatar%>" width="20" height="20">
-                <%= user.username%>
-              </p>
-          </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li>
-            <a href="/users/logout">Log Out</a>
-          </li>
-            <% } else { %>
-              <a href="/users/users_signin">Sign In</a>
-            <% } %>
-        </ul>
-      </div> <!-- /.navbar-collapse -->
-    </div> <!-- /.container-fluid -->
-    </nav>
-
-    <% if (typeof error !== 'undefined') { %>
-      <p class="alert alert-warning"> <%= error %></p>
+    <% if (typeof message !== 'undefined') { %>
+      <p class="alert alert-warning"> <%= message %></p>
     <% } %>
-
-    <% if (typeof success !== 'undefined') { %>
-      <p class="alert alert-success"> <%= success %></p>
-    <% } %>
-    
-    <% if (locals.notice) { %>
-      <p class="alert alert-info"> <%= notice %></p>
-    <% } %>
-    
+  
     <% if (typeof user !== 'undefined') { %>
       <div class="jumbotron">
         <h1>User Authentication</h1>
@@ -74,8 +27,9 @@
           <h3 class="panel-title">Profile Information</h3>
         </div>
         <div class="panel-body">
-          <p>Usernamme: <%= user.username %></p>
-          <p>Avatar: <img src="<%= user.avatar %>"/></p>
+          <p>Username: <%= user.username %></p>
+          <p>Email: <%= user.email %></p>
+          <p>Avatar: <img src="<%= user.avatar %>" width="120" height="120"></p>
         </div>
       </div>
     <% } else { %>
@@ -84,19 +38,18 @@
         <p>Sign in and view your profile!</p>
         <p>
           <a href="/users/users_signin" class="btn btn-primary btn-lg" role="button">
-            <span class="glyphicon glyphicon-user"></span>
+            <span class="glyphicon glyphicon-log-in"></span>
             Sign in!
+          </a>
+          <a href="/users/users_signup" class="btn btn-primary btn-lg" role="button">
+            <span class="glyphicon glyphicon-user"></span>
+            Register !
           </a>
         </p>
       </div>
     <% } %>
 
-
-
   </div> <!-- /.container -->
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </body>
 </html>

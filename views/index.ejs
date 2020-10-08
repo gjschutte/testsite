@@ -7,6 +7,9 @@
 
     <body>
         <div class="container-fluid">
+
+            <%- include ('partials/navigation'); -%>
+
             <div class="row">
                 <div class="col-sm-2">
                     <!-- block menu -->
@@ -14,7 +17,15 @@
                 <div class="col-sm-10">
 
                     <h1><%= title %></h1>
-                    <p>Welcome to <%=title %>, a very basic website to test node.js.</p>
+                    <p>Welcome to <%=title %>, a very basic website to test with several technologies. Amongst others, the following techologies are used:</p>
+                    <ul>
+                        <li>Node.js, with frameworks like Express, mongoose</li>
+                        <li>MongoDB as the database</li>
+                        <li>HTML5, CSS, Bootstrap</li>
+                        <li>Testing with Mocha</li>
+                    </ul>
+                    And also concepts like user authentication and logging are used. 
+                    <p> The application is deployed on Heroku.</p>
                     <h1>Content </h1>
                     <ul>
                         <li>

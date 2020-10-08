@@ -18,10 +18,9 @@
     <% } %>
 
     <div class="jumbotron">
-      <h1>Sign in</h1>
-      <p></p>
+      <h1>Sign up</h1>
 
-      <form id="local-sign-in" action="/users/login" method="post">
+      <form id="local-reg" action="/users/local-reg" method="post">
         <div>
           <p></p>
           <div class="form-group">
@@ -31,12 +30,18 @@
         </div>
         <div>
           <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control" id="username" name="username"/>
+          </div>
+        </div>
+        <div>
+          <div class="form-group">
             <label for="password">Password:</label>
             <input type="password" class="form-control" id="password" name="password"/>
           </div>
         </div>
         <div>
-          <input type="submit" class="btn btn-primary btn-sm" value="Log in"/>
+          <input type="submit" class="btn btn-primary btn-sm" value="Register"/>
         </div>
       </form>
 
