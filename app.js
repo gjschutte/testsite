@@ -11,11 +11,16 @@ const mongoose = require('mongoose');
 const compression = require('compression');
 // Add helmet, for setting HTTP headers (security)
 const helmet = require('helmet');
+const session = require('express-session');
+const passport = require('passport');
+// const localStrategy = require('passport-local');
 const winLogger = require('./winlogger');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const tasksRouter = require('./routes/tasks');
+
+const User = require('./models/user');
 
 const app = express();
 
@@ -25,9 +30,10 @@ app.use(helmet());
 const { DBLOGIN } = process.env;
 const { DBPASSWORD } = process.env;
 const { DBCOMMAND } = process.env;
+const { PPSECRET } = process.env;
 winLogger.info(`DBCOMMAND: ${DBCOMMAND}`);
 
-const mongoDB = `mongodb://${DBLOGIN}:${DBPASSWORD}${DBCOMMAND}`;
+const mongoDB = `mongodb+srv://${DBLOGIN}:${DBPASSWORD}${DBCOMMAND}`;
 mongoose.connect(mongoDB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -49,6 +55,9 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({ secret: PPSECRET, saveUninitialized: true, resave: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(compression()); // compress all routes
 app.use(express.static(path.join(__dirname, 'public')));
@@ -72,5 +81,10 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// Configure passport for user authentication
+passport.use(User.createStrategy({ usernameField: 'email' }));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 module.exports = app;

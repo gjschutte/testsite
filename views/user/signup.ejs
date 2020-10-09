@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="description" content="User Authentication">
+
+  <title><%= title %></title>
+  <%- include ('../partials/header'); -%>
+
+</head>
+
+<body>
+  <div class="container">
+
+    <%- include ('../partials/navigation'); -%>
+
+    <% if (typeof message !== 'undefined') { %>
+      <p class="alert alert-warning"> <%= message %></p>
+    <% } %>
+
+    <div class="jumbotron">
+      <h1>Sign up</h1>
+
+      <form id="local-reg" action="/users/local-reg" method="post">
+        <div>
+          <p></p>
+          <div class="form-group">
+            <label for="email">Email address:</label>
+            <input type="text" class="form-control" id="email" name="email"/>
+          </div>
+        </div>
+        <div>
+          <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control" id="username" name="username"/>
+          </div>
+        </div>
+        <div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" name="password"/>
+          </div>
+        </div>
+        <div>
+          <input type="submit" class="btn btn-primary btn-sm" value="Register"/>
+        </div>
+      </form>
+
+  </div> <!-- /.container -->
+
+</body>
+</html>

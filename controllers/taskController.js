@@ -1,6 +1,7 @@
 const async = require('async');
 const { check, validationResult } = require('express-validator');
 const { body } = require('express-validator');
+// const connectEnsureLogin = require('connect-ensure-login');
 const Task = require('../models/task');
 const Category = require('../models/category');
 const Status = require('../models/status');
@@ -19,7 +20,12 @@ exports.task_start = (req, res) => {
   }, (err, results) => {
     console.log(`Error: ${err}`);
     console.log(`Results: ${results}`);
-    res.render('todo/task_start', { title: 'My ToDo list', error: err, data: results });
+    res.render('todo/task_start', {
+      title: 'My ToDo list',
+      error: err,
+      data: results,
+      user: req.user,
+    });
   });
 };
 
@@ -30,7 +36,11 @@ exports.task_list = (req, res, next) => {
     .exec((err, listTasks) => {
       if (err) { return next(err); }
       // Succesful, so render
-      res.render('todo/task_list', { title: 'Task List', task_list: listTasks });
+      res.render('todo/task_list', {
+        title: 'Task List',
+        task_list: listTasks,
+        user: req.user,
+      });
       return 0;
     });
 };
@@ -43,7 +53,7 @@ exports.task_detail = (req, res, next) => {
     .exec((err, results) => {
       if (err) { return next(err); }
       // Succesful, so render
-      res.render('todo/task_details', { title: results.description, details: results });
+      res.render('todo/task_details', { title: results.description, details: results, user: req.user });
       return 0;
     });
 };
@@ -60,7 +70,12 @@ exports.task_create_get = (req, res, next) => {
     },
   }, (err, results) => {
     if (err) { return next(err); }
-    res.render('todo/task_form', { title: 'Create task', categories: results.categories, statusses: results.statusses });
+    res.render('todo/task_form', {
+      title: 'Create task',
+      categories: results.categories,
+      statusses: results.statusses,
+      user: req.user,
+    });
     return 0;
   });
 };
@@ -164,7 +179,11 @@ exports.task_update_get = (req, res, next) => {
     console.log(`Task update get: ${results.task}`);
     // Succes.
     res.render('todo/task_form', {
-      title: 'Update task', categories: results.categories, statusses: results.statusses, task: results.task,
+      title: 'Update task',
+      categories: results.categories,
+      statusses: results.statusses,
+      task: results.task,
+      user: req.user,
     });
     return 0;
   });
@@ -218,7 +237,12 @@ exports.task_update_post = [
         console.log(`Task: ${task.actionHolder}`);
         if (err) { return next(err); }
         res.render('todo/task_form', {
-          title: 'Create task', categories: results.categories, statusses: results.statusses, task, errors: errors.array(),
+          title: 'Create task',
+          categories: results.categories,
+          statusses: results.statusses,
+          task,
+          errors: errors.array(),
+          user: req.user,
         });
         return 0;
       });

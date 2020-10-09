@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="description" content="User Authentication">
+
+  <title><%= title %></title>
+  <%- include ('../partials/header'); -%>
+
+</head>
+
+<body>
+  <div class="container">
+
+    <%- include ('../partials/navigation'); -%>
+
+    <% if (typeof message !== 'undefined') { %>
+      <p class="alert alert-warning"> <%= message %></p>
+    <% } %>
+
+    <div class="jumbotron">
+      <h1>Sign in</h1>
+      <p></p>
+
+      <form id="local-sign-in" action="/users/login" method="post">
+        <div>
+          <p></p>
+          <div class="form-group">
+            <label for="email">Email address:</label>
+            <input type="text" class="form-control" id="email" name="email"/>
+          </div>
+        </div>
+        <div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" name="password"/>
+          </div>
+        </div>
+        <div>
+          <input type="submit" class="btn btn-primary btn-sm" value="Log in"/>
+        </div>
+      </form>
+
+  </div> <!-- /.container -->
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="description" content="User profile">
+
+  <title><%= title %></title>
+  <%- include ('../partials/header'); -%>
+
+</head>
+
+<body>
+  <div class="container">
+
+    <%- include ('../partials/navigation'); -%>
+
+    <% if (typeof message !== 'undefined') { %>
+      <p class="alert alert-warning"> <%= message %></p>
+    <% } %>
+  
+    <% if (typeof user !== 'undefined') { %>
+      <div class="jumbotron">
+        <h1>User Authentication</h1>
+        <p>Below is your profile information</p>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Profile Information</h3>
+        </div>
+        <div class="panel-body">
+          <p>Username: <%= user.username %></p>
+          <p>Email: <%= user.email %></p>
+          <p>Avatar: <img src="<%= user.avatar %>" width="120" height="120"></p>
+        </div>
+      </div>
+    <% } else { %>
+      <div class="jumbotron">
+        <h1>User Authentication</h1>
+        <p>Sign in and view your profile!</p>
+        <p>
+          <a href="/users/users_signin" class="btn btn-primary btn-lg" role="button">
+            <span class="glyphicon glyphicon-log-in"></span>
+            Sign in!
+          </a>
+          <a href="/users/users_signup" class="btn btn-primary btn-lg" role="button">
+            <span class="glyphicon glyphicon-user"></span>
+            Register !
+          </a>
+        </p>
+      </div>
+    <% } %>
+
+  </div> <!-- /.container -->
+
+</body>
+</html>

@@ -10,7 +10,7 @@ exports.status_list = (req, res, next) => {
     .exec((err, listStatusses) => {
       if (err) { return next(err); }
       // Succesful, so render
-      res.render('todo/status_list', { title: 'Status List', status_list: listStatusses });
+      res.render('todo/status_list', { title: 'Status List', status_list: listStatusses, user: req.user });
       return 0;
     });
 };
@@ -36,14 +36,19 @@ exports.status_detail = (req, res, next) => {
       return next(errorMessage);
     }
     // Succesful, so render
-    res.render('todo/status_detail', { title: 'Status detail', status: results.status, status_tasks: results.status_tasks });
+    res.render('todo/status_detail', {
+      title: 'Status detail',
+      status: results.status,
+      status_tasks: results.status_tasks,
+      user: req.user,
+    });
     return 0;
   });
 };
 
 // Display status create form on GET.
 exports.status_create_get = (req, res) => {
-  res.render('todo/status_form', { title: 'Create status' });
+  res.render('todo/status_form', { title: 'Create status', user: req.user });
 };
 
 // Handle category create form on POST.
@@ -108,7 +113,12 @@ exports.status_delete_get = (req, res, next) => {
       res.redirect('/tasks/statusses');
     }
     // successfull, so render.
-    res.render('todo/status_delete', { title: 'Delete Status', status: results.status, status_tasks: results.status_tasks });
+    res.render('todo/status_delete', {
+      title: 'Delete Status',
+      status: results.status,
+      status_tasks: results.status_tasks,
+      user: req.user,
+    });
     return 0;
   });
 };
