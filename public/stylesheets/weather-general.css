@@ -1,0 +1,49 @@
+
+.w-title {
+  text-align: center;
+}
+
+.w-background {
+  background-color: #622569;
+  padding-top: 10px;
+  padding-right: 5px;
+  padding-bottom: 10px;
+  padding-left: 5px;
+  color: white;
+  font-size:30px;
+  text-align: center;
+  border-color: green;
+}
+
+.w-temp {
+  font-size: 30px;
+  color: yellow;
+}
+
+.w-icon-big {
+  font-size: 50px;
+}
+
+.w-text-15 {
+  font-size: 15px;
+}
+
+.w-hr {
+  color: white;
+}
+
+.w-daily-detail {
+  background-color: white;
+  color: #622569;
+  font-size: 15px;
+  text-align: center;
+  padding: 10px;
+}
+
+.w-text-small {
+  font-size: 10px;
+}
+
+.w-hr-grey {
+  color: black;
+}

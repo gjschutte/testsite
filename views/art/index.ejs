@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="description" content="computer art">
+
+  <title><%= title %></title>
+  <%- include ('../partials/header'); -%>
+  <link rel="stylesheet", href="/stylesheets/weather-icons.css">
+  <!--<link rel="stylesheet", href="/stylesheets/weather-icons.min.css"> -->
+  <link rel="stylesheet", href="/stylesheets/weather-icons-wind.css">
+  <!-- <link rel="stylesheet", href="/stylesheets/weather-icons-wind.min.css"> -->
+  <link rel="stylesheet", href="/stylesheets/weather-general.css">
+
+</head>
+
+<body>
+  <div class="container">
+
+    <%- include ('../partials/navigation'); -%>
+
+    <div class="jumbotron">
+      <h1>Computer art</h1>
+
+      <p>A computer can be used to create art. You can program intentionally randomness. In that way, the most beatifull pictures can be created.</p>
+      <p>One form of computer art is called <a href="https://en.wikipedia.org/wiki/Generative_art"> Generative Art.</a> Generative Art is a technique where pictures or onscreen images are created using algorithms.</p>
+
+      <p>Some examples that I have created:</p>
+      <ul>
+        <li>
+          <a href="/art/lineart">Lineart 1</a>
+        </li>
+        <li>
+          <a href="/art/lineart2">Lineart 2</a>
+        </li>
+        <li>
+          <a href="/art/lineart3">Lineart 3</a>
+        </li>
+        <li>
+          <a href="/art/circles">Circles</a>
+        </li>
+      </ul>
+    </div>
+
+  </div> <!-- /.container -->
+
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="description" content="weather forecast">
+
+  <title><%= title %></title>
+  <%- include ('../partials/header'); -%>
+  <link rel="stylesheet", href="/stylesheets/weather-icons.css">
+  <!--<link rel="stylesheet", href="/stylesheets/weather-icons.min.css"> -->
+  <link rel="stylesheet", href="/stylesheets/weather-icons-wind.css">
+  <!-- <link rel="stylesheet", href="/stylesheets/weather-icons-wind.min.css"> -->
+  <link rel="stylesheet", href="/stylesheets/weather-general.css">
+
+  <!-- Chart definition -->
+  <script type="text/javascript" src="https://gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+
+    /* get the weatherData into Javascript */
+    const weatherData = <%- JSON.stringify(data) %>;
+
+    /* Load google charts */
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChartTemp);
+    google.charts.setOnLoadCallback(drawChartRain);
+    google.charts.setOnLoadCallback(drawChartWind);
+    google.charts.setOnLoadCallback(drawChartPressure);
+
+    function drawChartTemp() {
+      /* Show the temperature and feels like
+
+      /* Format the temperature data to show */
+      let tempTable = [['Time', 'Temperature', 'Feels like']];
+      for (i=0; i < weatherData.list.length; i++) {
+        let tempLine = [weatherData.list[i].printDate, weatherData.list[i].main.temp, weatherData.list[i].main.feels_like];
+        tempTable.push(tempLine);
+      };
+
+      console.log('Temptable' + tempTable);
+
+      var data = google.visualization.arrayToDataTable(tempTable); 
+
+      var options = {
+        title: '5-days temperature forecast',
+        curveType: 'function',
+        legend: { position: 'bottom' }
+      };
+
+      /* Draw the chart */
+      var chart = new google.visualization.LineChart(document.getElementById('temp_chart'));
+      chart.draw(data, options);
+    };
+
+    function drawChartRain() {
+      /* Show the rain and snow amount
+
+      /* Format the temperature data to show 
+      ** If the element RAIN is not present, add 0
+      */
+      let rainTable = [['Time', 'Rain', 'Snow']];
+      for (i=0; i < weatherData.list.length; i++) {
+        let snow = 0;
+        let rain = 0;
+        if (typeof weatherData.list[i].rain !== "undefined") {
+          rain = weatherData.list[i].rain["3h"];
+        };
+        if (typeof weatherData.list[i].snow !== "undefined") {
+          snow = weatherData.list[i].snow["3h"];
+        };
+        let rainLine = [weatherData.list[i].printDate, rain, snow];
+        rainTable.push(rainLine);
+      };
+
+      console.log('raintable' + rainTable);
+
+      var data = google.visualization.arrayToDataTable(rainTable); 
+
+      var options = {
+        title: '5-days rain forecast',
+        curveType: 'function',
+        legend: { position: 'bottom' }
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('rain_chart'));
+
+      chart.draw(data, options);
+    };
+
+    function drawChartWind() {
+      /* Show the wind speed
+
+      /* Format the temperature data to show */
+      let windTable = [['Time', 'Wind speed']];
+      for (i=0; i < weatherData.list.length; i++) {
+        let windLine = [weatherData.list[i].printDate, weatherData.list[i].windSpeed];
+        windTable.push(windLine);
+      };
+
+      console.log('windtable' + windTable);
+
+      var data = google.visualization.arrayToDataTable(windTable); 
+
+      var options = {
+        title: '5-days Wind speed forecast',
+        curveType: 'function',
+        legend: { position: 'bottom' }
+      };
+
+      /* Draw the chart */
+      var chart = new google.visualization.LineChart(document.getElementById('wind_chart'));
+      chart.draw(data, options);
+    };
+
+    function drawChartPressure() {
+      /* Show the pressure
+
+      /* Format the temperature data to show */
+      let pressureTable = [['Time', 'Pressure']];
+      for (i=0; i < weatherData.list.length; i++) {
+        let pressureLine = [weatherData.list[i].printDate, weatherData.list[i].main.pressure];
+        pressureTable.push(pressureLine);
+      };
+
+      console.log('pressureTable' + pressureTable);
+
+      var data = google.visualization.arrayToDataTable(pressureTable); 
+
+      var options = {
+        title: '5-days Pressure forecast',
+        curveType: 'function',
+        legend: { position: 'bottom' }
+      };
+
+      /* Draw the chart */
+      var chart = new google.visualization.LineChart(document.getElementById('pressure_chart'));
+      chart.draw(data, options);
+    };
+
+
+  </script>
+</head>
+
+<body>
+  <div class="container">
+
+    <%- include ('../partials/navigation'); -%>
+
+    <div class="row">
+      <div class="col-sm-2">
+        <%- include ('partials/menu.ejs'); -%>
+      </div>
+      <div class="col-sm-10">
+        <div class="jumbotron">
+          <h1>Weather graphs</h1>
+  
+          <form id="cityInput" action="/weather/forecast" method="post">
+            <div>
+              <p></p>
+              <div class="form-group">
+                <label for="city">Enter a city:</label>
+                <input type="text" class="form-control" id="city" name="city"/>
+              </div>
+            </div>
+            <div>
+              <input type="submit" class="btn btn-primary btn-sm" value="Get graphs"/>
+            </div>
+          </form>
+          <p></p>
+          <h2>Graphs for <%= data.city.name %></h2>
+        </div>
+      </div>
+    </div>
+
+    <div id="temp_chart" style="width: 900px; height: 500px"></div>
+    <div id="rain_chart" style="width: 900px; height: 500px"></div>
+    <div id="wind_chart" style="width: 900px; height: 500px"></div>
+    <div id="pressure_chart" style="width: 900px; height: 500px"></div>
+
+  </div> <!-- /.container -->
+
+</body>
+</html>

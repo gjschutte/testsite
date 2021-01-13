@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="description" content="weather forecast">
+
+  <title><%= title %></title>
+  <%- include ('../partials/header'); -%>
+  <link rel="stylesheet", href="/stylesheets/weather-icons.css">
+  <!--<link rel="stylesheet", href="/stylesheets/weather-icons.min.css"> -->
+  <link rel="stylesheet", href="/stylesheets/weather-icons-wind.css">
+  <!-- <link rel="stylesheet", href="/stylesheets/weather-icons-wind.min.css"> -->
+  <link rel="stylesheet", href="/stylesheets/weather-general.css">
+
+</head>
+
+<body>
+  <div class="container">
+
+    <%- include ('../partials/navigation'); -%>
+
+    <div class="row">
+      <div class="col-sm-2">
+        <%- include ('partials/menu.ejs'); -%>
+      </div>
+      <div class="col-sm-10">
+        <div class="jumbotron">
+
+          <h1>Current weather </h1>
+
+          <form id="cityInput" action="/weather/current" method="post">
+            <div>
+              <p></p>
+              <div class="form-group">
+                <label for="city">Enter a city:</label>
+                <input type="text" class="form-control" id="city" name="city"/>
+              </div>
+            </div>
+            <div>
+              <input type="submit" class="btn btn-primary btn-sm" value="Get weather"/>
+            </div>
+          </form>
+          <p></p>
+          <div class="jumbotron w-background">
+            <div class="row">
+              <div class="w-title">Weather in <%= data.name %>: <%= data.weather[0].description %></div>
+              <hr class="w-hr">
+            </div>
+            <div class="row">
+              <div class="col-sm-3 w-icon-big">
+                <i class="wi <%= data.weather[0].newIcon %>"></i>
+              </div>
+              <div class="col-sm-9">
+                <div class="row">
+                  <div class="col-sm-4">
+                    <%= data.main.temp %>&#8451
+                  </div>
+                  <div class="col-sm-2">
+                    <i class="wi wi-wind-beaufort-<%= data.wind.speedConv %>"></i>
+                  </div>
+                  <div class="col-sm-6">
+                    <i class="wi wi-barometer">&nbsp</i><%= data.main.pressure %>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="w-text-small">Feels like</div>
+                    <%= data.main.feels_like %>&#8451
+                  </div>
+                  <div class="col-sm-2">
+                    <p></p>
+                    <i class="wi wi-wind from-<%= data.wind.deg %>-deg"></i>
+                  </div>
+                  <div class="col-sm-6">
+                    <p></p>
+                    <i class="wi wi-humidity"></i>&nbsp<%= data.main.humidity %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- /.container -->
+
+</body>
+</html>

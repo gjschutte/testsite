@@ -2,7 +2,8 @@
   "extends": "airbnb",
   "rules": {
     "no-console": "off",
-    "no-unused-vars": ["error", { "argsIgnorePattern": "next" }]
+    "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
+    "no-param-reassign": [2, { "props": false }]
   },
   "env": {
     "mocha": true
